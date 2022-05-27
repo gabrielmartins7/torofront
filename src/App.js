@@ -1,7 +1,21 @@
 import logo from './logo.svg';
 import './App.css';
+import useWebSocket from 'react-use-websocket';
+
+
 
 function App() {
+  const { lastJsonMessage, sendMessage } = useWebSocket('ws://localhost:8080/quotes', {
+  onOpen: () => console.log(`Connected to App WS`),
+  onMessage: () => {
+    if (lastJsonMessage) {
+      console.log(lastJsonMessage);
+    }
+  },
+  onError: (event) => { console.error(event); },
+  shouldReconnect: (closeEvent) => true,
+  reconnectInterval: 3000
+});
   return (
     <div className="App">
       <header className="App-header">
@@ -19,6 +33,7 @@ function App() {
         </a>
       </header>
     </div>
+    
   );
 }
 
