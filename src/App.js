@@ -1,25 +1,35 @@
 import logo from './logo_toro.svg';
 import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 import useWebSocket from 'react-use-websocket';
-import {
-  Col,
-  Container,
-  Navbar,
-  Row,
-  Button,
-  Card,
-  CardGroup,
-} from 'react-bootstrap';
+import { Col, Container, Navbar, Row, Card, CardGroup } from 'react-bootstrap';
+import CustomButton from './components/button';
+import { useState } from 'react';
 
 function App() {
+  var x;
+  var y;
+  var z;
+  var a = [];
+  const [orders, setOrders] = useState([]);
   const { lastJsonMessage, sendMessage } = useWebSocket(
     'ws://localhost:8080/quotes',
     {
       onOpen: () => console.log(`Connected to App WS`),
       onMessage: () => {
         if (lastJsonMessage) {
+          /* console.log(lastJsonMessage); */
+          /* x['Object.keys(orders)[0]'] =
+            lastJsonMessage[Object.keys(lastJsonMessage)[0]]; */
+          x = Object.keys(lastJsonMessage);
+          y = Object.values(lastJsonMessage);
+          z = Object.entries(lastJsonMessage);
+          /* this.setState(previousState => ({
+            a: [...previousState.a, 'new value'],
+          })); */
+          /* console.log(lastJsonMessage[Object.keys(lastJsonMessage)[0]]); */
           console.log(lastJsonMessage);
+          setOrders(...orders, z);
         }
       },
       onError: event => {
@@ -29,6 +39,12 @@ function App() {
       reconnectInterval: 3000,
     }
   );
+  console.log(orders);
+  /* console.log(orders.sort()); */
+  /* x.push(3.5, 1, 2, 3, 4, 5, 6, 7, 8); */
+  /* console.log(orders); */
+  /* console.log(Object.keys(orders)[0]);
+  console.log(orders[Object.keys(orders)[0]]); */
   return (
     /* <div className="App">
       <header className="App-header">
@@ -67,7 +83,7 @@ function App() {
           </Col>
           <Col md={{ span: 4, offset: 4 }}>
             <p style={{ color: '#7E868E', fontSize: 14 }}>Ordernar:</p>{' '}
-            <Button variant="primary" style={{ borderRadius: 20 }}>
+            {/* <Button variant="primary" style={{ borderRadius: 20 }}>
               Em alta
             </Button>{' '}
             <Button
@@ -75,67 +91,31 @@ function App() {
               style={{ borderRadius: 100, color: '#ECEDEE' }}
             >
               Em baixa
-            </Button>{' '}
+            </Button>{' '} */}
+            <CustomButton
+              variant="primary"
+              style={{ borderRadius: 20 }}
+              text="Em alta"
+            ></CustomButton>{' '}
+            <CustomButton
+              variant="secondary"
+              style={{ borderRadius: 100, color: '#ECEDEE' }}
+              text="Em baixa"
+            ></CustomButton>{' '}
           </Col>
         </Row>
         <Row className="pt-5">
-          <CardGroup>
-            <Card>
-              <Card.Img variant="top" src="holder.js/100px160" />
-              <Card.Body>
-                <Card.Title>Card title</Card.Title>
-                <Card.Text>
-                  This is a wider card with supporting text below as a natural
-                  lead-in to additional content. This content is a little bit
-                  longer.
-                </Card.Text>
-              </Card.Body>
-              <Card.Footer>
-                <small className="text-muted">Last updated 3 mins ago</small>
-              </Card.Footer>
-            </Card>
-            <Card>
-              <Card.Img variant="top" src="holder.js/100px160" />
-              <Card.Body>
-                <Card.Title>Card title</Card.Title>
-                <Card.Text>
-                  This card has supporting text below as a natural lead-in to
-                  additional content.{' '}
-                </Card.Text>
-              </Card.Body>
-              <Card.Footer>
-                <small className="text-muted">Last updated 3 mins ago</small>
-              </Card.Footer>
-            </Card>
-            <Card>
-              <Card.Img variant="top" src="holder.js/100px160" />
-              <Card.Body>
-                <Card.Title>Card title</Card.Title>
-                <Card.Text>
-                  This is a wider card with supporting text below as a natural
-                  lead-in to additional content. This card has even longer
-                  content than the first to show that equal height action.
-                </Card.Text>
-              </Card.Body>
-              <Card.Footer>
-                <small className="text-muted">Last updated 3 mins ago</small>
-              </Card.Footer>
-            </Card>
-          </CardGroup>
-        </Row>
-        <Row xs={1} md={2} className="g-4">
-          {Array.from({ length: 4 }).map((_, idx) => (
+          {Array.from({ length: 5 }).map((_, idx) => (
             <Col>
               <Card>
                 <Card.Img variant="top" src="holder.js/100px160" />
                 <Card.Body>
-                  <Card.Title>Card title</Card.Title>
-                  <Card.Text>
-                    This is a longer card with supporting text below as a
-                    natural lead-in to additional content. This content is a
-                    little bit longer.
-                  </Card.Text>
+                  <Card.Title>{Object.keys(orders)[0]}</Card.Title>
+                  <Card.Text>{orders[Object.keys(orders)[0]]}</Card.Text>
                 </Card.Body>
+                <Card.Footer>
+                  <small className="text-muted">Last updated 3 mins ago</small>
+                </Card.Footer>
               </Card>
             </Col>
           ))}
