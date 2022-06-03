@@ -7,10 +7,6 @@ import CustomButton from './components/button';
 import { useState } from 'react';
 
 function App() {
-  var x;
-  var y;
-  var z;
-  var a = [];
   const [orders, setOrders] = useState([]);
   const { lastJsonMessage, sendMessage } = useWebSocket(
     'ws://localhost:8080/quotes',
@@ -19,17 +15,7 @@ function App() {
       onMessage: () => {
         if (lastJsonMessage) {
           /* console.log(lastJsonMessage); */
-          /* x['Object.keys(orders)[0]'] =
-            lastJsonMessage[Object.keys(lastJsonMessage)[0]]; */
-          x = Object.keys(lastJsonMessage);
-          y = Object.values(lastJsonMessage);
-          z = Object.entries(lastJsonMessage);
-          /* this.setState(previousState => ({
-            a: [...previousState.a, 'new value'],
-          })); */
-          /* console.log(lastJsonMessage[Object.keys(lastJsonMessage)[0]]); */
-          console.log(lastJsonMessage);
-          setOrders(...orders, z);
+          setOrders(lastJsonMessage);
         }
       },
       onError: event => {
@@ -39,29 +25,9 @@ function App() {
       reconnectInterval: 3000,
     }
   );
+  console.log(Object.keys(orders));
   console.log(orders);
-  /* console.log(orders.sort()); */
-  /* x.push(3.5, 1, 2, 3, 4, 5, 6, 7, 8); */
-  /* console.log(orders); */
-  /* console.log(Object.keys(orders)[0]);
-  console.log(orders[Object.keys(orders)[0]]); */
   return (
-    /* <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div> */
     <>
       <Navbar bg="dark" variant="dark">
         <Container>
@@ -83,15 +49,6 @@ function App() {
           </Col>
           <Col md={{ span: 4, offset: 4 }}>
             <p style={{ color: '#7E868E', fontSize: 14 }}>Ordernar:</p>{' '}
-            {/* <Button variant="primary" style={{ borderRadius: 20 }}>
-              Em alta
-            </Button>{' '}
-            <Button
-              variant="secondary"
-              style={{ borderRadius: 100, color: '#ECEDEE' }}
-            >
-              Em baixa
-            </Button>{' '} */}
             <CustomButton
               variant="primary"
               style={{ borderRadius: 20 }}
@@ -108,14 +65,11 @@ function App() {
           {Array.from({ length: 5 }).map((_, idx) => (
             <Col>
               <Card>
-                <Card.Img variant="top" src="holder.js/100px160" />
+                <Card.Img variant="top" src="" />
                 <Card.Body>
                   <Card.Title>{Object.keys(orders)[0]}</Card.Title>
                   <Card.Text>{orders[Object.keys(orders)[0]]}</Card.Text>
                 </Card.Body>
-                <Card.Footer>
-                  <small className="text-muted">Last updated 3 mins ago</small>
-                </Card.Footer>
               </Card>
             </Col>
           ))}
@@ -126,12 +80,3 @@ function App() {
 }
 
 export default App;
-
-/* const styles = StyleSheet.create({
-  title: {
-    marginLeft: 40,
-    marginRight: '5.56%',
-    marginTop: '2.57%',
-    marginBottom: '85.38%',
-  },
-}); */
